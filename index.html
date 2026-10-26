@@ -103,9 +103,9 @@ li { min-width: 0; }
 
   <section class="kpis" aria-label="Resumo">
     <div class="kpi"><b>16/11</b><span>Go live PRO Book a Call</span></div>
-    <div class="kpi"><b>23/11</b><span>Go live Webinários (gestor + dono de negócio)</span></div>
+    <div class="kpi"><b>23/11</b><span>Go live Webinários</span></div>
     <div class="kpi"><b>30/11</b><span>Go live Funil do Ladeira</span></div>
-    <div class="kpi"><b>Dez/26</b><span>Proposta para a Nova aula introdutória</span></div>
+    <div class="kpi"><b>Dez/26</b><span>Proposta para a Aula Introdutória ao vivo</span></div>
   </section>
 
   <section class="panel">
@@ -118,12 +118,12 @@ li { min-width: 0; }
         <span><i class="dia"></i>Go live</span>
         <span><i class="est"></i>Estimativa (não dita na reunião)</span>
       </div>
-      <button id="toggle" type="button">Recolher para visão macro</button>
+      <button id="toggle" type="button">Expandir fases</button>
     </div>
     <div class="scroll">
       <div class="gantt" id="gantt"></div>
     </div>
-    <p class="note" style="margin:12px 0 0">Semana de 02/11 fora do roadmap (feriado e agenda do Pedro). Os funis se sobrepõem: enquanto um está em edição e implementação, a copy do próximo já está sendo escrita.</p>
+    <p class="note" style="margin:12px 0 0">Os funis se sobrepõem: enquanto um está em edição e implementação, a copy do próximo já está sendo escrita.</p>
   </section>
 
   <section class="cols">
@@ -149,8 +149,8 @@ li { min-width: 0; }
       <h2>Pontos para validar com a Giulia</h2>
       <ul>
         <li>Lançar primeiro o webinário de gestor de tráfego?</li>
-        <li>Escopo do funil da Nova aula introdutória e como medir resultado.</li>
-        <li>Priorização de dezembro para a aula introdutória.</li>
+        <li>Escopo do funil da Aula Introdutória ao vivo e como medir resultado.</li>
+        <li>Priorização de dezembro para a Aula Introdutória ao vivo.</li>
         <li>Ferramenta de agendamento do Book a Call: Vicky já tem? Se não, comprar.</li>
       </ul>
     </div>
@@ -185,7 +185,7 @@ const funnels = [
     ['Briefing e gravação (Pedro)', 'grav', 11, 23, 11, 25, true],
     ['Edição e implementação', 'impl', 11, 23, 11, 27, true],
   ]},
-  { prio: 'P4', name: 'Aula introdutória ao vivo', live: null, phases: [
+  { prio: 'P4', name: 'Aula Introdutória ao vivo', live: null, phases: [
     ['Janela proposta (a validar com Giulia)', 'tbd', 11, 30, 12, 7],
   ]},
   { prio: 'P5', name: 'Curso de 12 horas', live: null, tail: '2027 →', phases: [] },
@@ -216,7 +216,7 @@ funnels.forEach((f, i) => {
   const tid = 'f' + i;
   html += `<div class="row funnel frow" role="button" tabindex="0" data-f="${tid}" aria-expanded="true">
     <div class="lab"><span class="chev">▾</span><span class="prio ${f.prio === 'P4' || f.prio === 'P5' ? '' : ''}">${f.prio}</span>${f.name}</div>
-    <div class="track">${i === 0 ? band : ''}${grid}${sum}${live}${tail}</div></div>`;
+    <div class="track">${grid}${sum}${live}${tail}</div></div>`;
   f.phases.forEach(p => {
     const s = pos(p[2], p[3]), w = pos(p[4], p[5]) + 1 - s;
     const range = fmt(p[2], p[3]) + (p[3] === p[5] && p[2] === p[4] ? '' : '–' + fmt(p[4], p[5]));
@@ -239,8 +239,9 @@ g.querySelectorAll('.frow').forEach(r => {
   r.addEventListener('click', flip);
   r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(); } });
 });
-let open = true;
+let open = false;
 const btn = document.getElementById('toggle');
+funnels.forEach((_, i) => setOpen('f' + i, false));
 btn.addEventListener('click', () => {
   open = !open;
   funnels.forEach((_, i) => setOpen('f' + i, open));
